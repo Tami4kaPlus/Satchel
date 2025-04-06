@@ -149,6 +149,16 @@ local UICorner1 = Instance.new("UICorner")
 UICorner1.Parent = inventoryIcon
 UICorner1.CornerRadius = UDim.new(0.5, 0)
 
+UserInputService.InputBegan:Connect(function(input, isTyping)
+	if isTyping then return end
+	
+	if input.KeyCode == Enum.KeyCode.Backquote then
+		if not GuiService.MenuIsOpen then
+			BackpackScript.OpenClose()
+		end
+	end
+end)
+
 inventoryIcon.MouseButton1Click:Connect(function()
 	if not GuiService.MenuIsOpen then
 		BackpackScript.OpenClose()
