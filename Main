@@ -131,19 +131,25 @@ local GAMEPAD_INPUT_TYPES: { [Enum.UserInputType]: boolean } =
 -- Topbar logic
 local BackpackEnabled: boolean = true
 
-local Icon: any = require(script.Packages:WaitForChild("topbarplus"))
+local ScreenGui1 = Instance.new("ScreenGui") 
+ScreenGui1.Parent = game.Players.LocalPlayer.PlayerGui
 
-local inventoryIcon: any = Icon.new()
-	:setName("Inventory")
-	:setImage(ARROW_IMAGE_OPEN, "Selected")
-	:setImage(ARROW_IMAGE_CLOSE, "Deselected")
-	:setImageScale(1)
-	:setCaption("Inventory")
-	:bindToggleKey(Enum.KeyCode.Backquote)
-	:autoDeselect(false)
-	:setOrder(-1)
+local inventoryIcon = Instance.new("TextButton") 
+inventoryIcon.Parent = ScreenGui1
+inventoryIcon.Size = UDim2.new(0, 50, 0, 50)
+inventoryIcon.Position = UDim2.new(0.01, 0, 0)
+inventoryIcon.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+inventoryIcon.BackgroundTransparency = 0.3
+inventoryIcon.BorderSizePixel = 0
+inventoryIcon.Text = "🎒"
+inventoryIcon.TextColor3 = Color3.fromRGB(0, 0, 0)
+inventoryIcon.TextSize = 18
 
-inventoryIcon.toggled:Connect(function(): ()
+local UICorner1 = Instance.new("UICorner") 
+UICorner1.Parent = inventoryIcon
+UICorner1.CornerRadius = UDim.new(0.5, 0)
+
+inventoryIcon.MouseButton1Click:Connect(function()
 	if not GuiService.MenuIsOpen then
 		BackpackScript.OpenClose()
 	end
@@ -775,7 +781,6 @@ local function MakeSlot(parent: Instance, initIndex: number?): GuiObject
 			startPoint = dragPoint
 
 			SlotFrame.BorderSizePixel = 2
-			inventoryIcon:lock()
 
 			-- Raise above other slots
 			SlotFrame.ZIndex = 2
@@ -824,7 +829,7 @@ local function MakeSlot(parent: Instance, initIndex: number?): GuiObject
 			SlotFrame.Parent = startParent
 
 			SlotFrame.BorderSizePixel = 0
-			inventoryIcon:unlock()
+			--inventoryIcon:unlock()
 
 			-- Restore height
 			SlotFrame.ZIndex = 1
@@ -1083,7 +1088,7 @@ local function OnInputBegan(input: InputObject, isProcessed: boolean): ()
 	if not isProcessed then
 		if inputType == Enum.UserInputType.MouseButton1 or inputType == Enum.UserInputType.Touch then
 			if InventoryFrame.Visible then
-				inventoryIcon:deselect()
+				--inventoryIcon:deselect()
 			end
 		end
 	end
@@ -1398,7 +1403,7 @@ function enableGamepadInventoryControl(): ()
 				return
 			end
 		elseif InventoryFrame.Visible then
-			inventoryIcon:deselect()
+			--inventoryIcon:deselect()
 		end
 	end
 
@@ -1979,13 +1984,13 @@ end
 -- When menu is opend, disable backpack
 GuiService.MenuOpened:Connect(function(): ()
 	BackpackGui.Enabled = false
-	inventoryIcon:setEnabled(false)
+	--inventoryIcon:setEnabled(false)
 end)
 
 -- When menu is closed, enable backpack
 GuiService.MenuClosed:Connect(function(): ()
 	BackpackGui.Enabled = true
-	inventoryIcon:setEnabled(true)
+	--inventoryIcon:setEnabled(true)
 end)
 
 do -- Make the Inventory expand/collapse arrow (unless TopBar)
